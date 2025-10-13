@@ -1,11 +1,7 @@
 <template>
-   <div class="q-pa-md" style="min-width: 325px; max-width: 768px;">
+   <div class="q-pa-xs" style="min-width: 325px; max-width: 768px;">
 
-    <q-form
-      @save="onSave"
-      @cancel="onCancel"
-      class="q-gutter-md"
-    >
+    <q-form class="q-gutter-md">
       <q-input
         filled
         v-model="name"
@@ -94,8 +90,8 @@
       />
 
       <div class="text-center">
-        <q-btn label="Salvar" type="save" color="primary"/>
-        <q-btn label="Cancelar" type="cancel" color="primary" flat class="q-ml-sm" />
+        <q-btn label="Cancelar" @click="onCancel" color="secondary" flat class="q-ml-sm" to="/" />
+        <q-btn label="Salvar" @click="onSave" color="secondary" to="/encomendas" />
       </div>
     </q-form>
   </div>
@@ -117,17 +113,17 @@ const formaPagamento = ref(null)
 const statusPagamento = ref(null)
 const statusVenda = ref(null)
 
-const onSave = () => {
-  
+function onSave(){
+  console.log('Salvo')
     $q.notify({
       color: 'green-4',
       textColor: 'white',
       icon: 'cloud_done',
-      message: 'Submitted'
+      message: 'Venda Salva'
     });
-  }
+}
 
-const onCancel = () => {
+function onCancel() { 
   name.value = null
   cpf.value = null
   telefone.value = null
@@ -137,6 +133,13 @@ const onCancel = () => {
   formaPagamento.value = null
   statusPagamento.value = null
   statusVenda.value = null
+
+  $q.notify({
+    color: 'negative',
+    textColor: 'white',
+    icon: 'close',
+    message: 'Venda Cancelada'
+  })
 }
 
 

@@ -1,3 +1,6 @@
 <template>
-    <h1>Serviços registrados</h1>
+    <q-page>
+        <h4>Serviços registrados</h4>
+        <q-btn label="Home" to="/"/>
+    </q-page>
 </template>

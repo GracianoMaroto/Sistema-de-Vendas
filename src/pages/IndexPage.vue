@@ -6,13 +6,13 @@
     <div class="text-center">
       <q-img src="/icons/Logo-AurumDesk.png" height="90px" width="90px"/>
     </div>
-    <h2 class="text-center">Index Page</h2>
+    <h4 class="text-center">LOGOMARCA<br>ÁLVARO ALIANÇAS</h4>
 
-    <div class="text-center text-bold">  
-      <h6>Botão de Registrar venda</h6>
-      <p>com routerlink to '/registrarvendas'</p>
-      <h6>Botão de Registrar Serviço</h6>
-      <p>com routerlink to '/registrarservicos'</p>
+    <div class="text-center">
+      <div class="q-gutter-sm">  
+        <q-btn size="22px" style="background: goldenrod; color: white; width: 315px;" label="+ Nova Venda" to="/registrarvendas" />
+        <q-btn size="22px" style="background: goldenrod; color: white; width: 315px;" label="+ Novo Serviço" to="/registrarservicos" />
+      </div>  
     </div>
   </div>
 
