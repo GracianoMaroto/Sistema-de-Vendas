@@ -1,13 +1,14 @@
 const routes = [
+  { path: '/auth', component: () => import('pages/LoginRegisterPage.vue')},
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'registrarvendas', component: () => import('src/pages/RegistrarVendasPage.vue') },
-      { path: 'registrarservicos', component: () => import('src/pages/RegistrarServicosPage.vue') },
+      { path: 'registrarvendas', component: () => import('pages/RegistrarVendasPage.vue') },
+      { path: 'registrarservicos', component: () => import('pages/RegistrarServicosPage.vue') },
       { path: 'encomendas', component: () => import('pages/EncomendasPage.vue') },
-      { path: 'servicos', component: () => import('src/pages/ServicosPage.vue') },
+      { path: 'servicos', component: () => import('pages/ServicosPage.vue') },
     ],
     
   },

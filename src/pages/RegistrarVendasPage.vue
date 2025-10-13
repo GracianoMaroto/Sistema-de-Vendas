@@ -6,7 +6,7 @@
     <div class="text-center">
       <q-img src="/icons/Logo-AurumDesk.png" height="90px" width="90px"/>
     </div>
-    <h2>Registrar Venda</h2>
+    <h3 class="text-secondary">Registrar Venda</h3>
     <form-venda />
   </div>
 </q-page>
