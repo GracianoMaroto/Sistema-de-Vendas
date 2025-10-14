@@ -4,7 +4,7 @@
   <div class="q-gutter-sm">
     
     <div class="text-center">
-      <q-img src="/icons/Logo-AurumDesk.png" height="90px" width="90px"/>
+      <q-img src="/icons/Logomarca-AurumDesk.png" height="140px" width="140px"/>
     </div>
     <h4 class="text-center">LOGOMARCA<br>ÁLVARO ALIANÇAS</h4>
 

@@ -89,10 +89,10 @@
         ]"
       />
 
-      <div class="text-center">
-        <q-btn label="Cancelar" @click="onCancel" color="secondary" flat class="q-ml-sm" to="/" />
-        <q-btn label="Salvar" @click="onSave" color="secondary" to="/encomendas" />
-      </div>
+        <div class="text-center">  
+          <q-btn label="Cancelar" @click="onCancel" color="secondary" flat class="q-ml-sm" to="/" />
+          <q-btn label="Salvar" @click="onSave" color="secondary" to="/encomendas" />
+        </div>
     </q-form>
   </div>
 </template>
