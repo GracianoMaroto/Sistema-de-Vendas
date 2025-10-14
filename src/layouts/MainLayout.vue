@@ -2,10 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="botãoMenuLateral" />
-
         <q-toolbar-title> Álvaro Alianças </q-toolbar-title>
-
         <div class="text-black">
           <q-btn-dropdown
             split
@@ -13,42 +10,39 @@
             color="secondary"
             label="Vendedor (a)"
           >
-          <q-btn icon="logout" class= "text-center full-width text-red-6" flat label="Sair" to="/auth"/>
-          <!-- <q-list>
-            <q-item>
-              <q-item-section>
-                <q-item-label to="/auth">Sair</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list> -->
+            <q-btn icon="logout" class= "text-center full-width text-red-6" flat label="Sair" to="/auth"/>
+            <!-- Fazer a logica para de fato ter o logout. -->
           </q-btn-dropdown>
         </div>
       </q-toolbar>
     </q-header>
-
-    <q-drawer v-model="menuSanduiche" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Páginas </q-item-label>
-
-      </q-list>
-    </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
-    <q-footer style="text-align: center; color:white" elevated>
-      © Desenvolvido por AurumDesk, {{ anoAtual }}.
+    <q-footer>
+      <!-- colocar v-model= "tab" dentro do q-tabs -->
+      <div elevated>
+        <q-tabs
+        class="bg-grey-3 text-black"
+        style="background-color: grey;"
+        narrow-indicator
+        active-color="accent"
+        dense
+        >
+        <q-route-tab name="home" icon="home" label="Home" to="/" />
+        <q-route-tab name="encomendas" icon="unarchive" label="Encomendas" to="/encomendas" />
+        <q-route-tab name="servicos" icon="handyman" label="Serviços" to="/servicos" />
+        </q-tabs>
+      </div>
+      <div class="text-center" >
+        © Desenvolvido por AurumDesk, {{ anoAtual }}.
+      </div>
     </q-footer>
   </q-layout>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 
-const menuSanduiche = ref(false)
 var anoAtual = new Date().getFullYear();
 
-function botãoMenuLateral() {
-  menuSanduiche.value = !menuSanduiche.value
-}
 </script>
