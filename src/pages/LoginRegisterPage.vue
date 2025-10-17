@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        
+
         <q-toolbar-title> Álvaro Alianças </q-toolbar-title>
 
         <div class="text-secondary"> © AurumDesk </div>
@@ -17,11 +17,17 @@
               </div>
           </q-page>
         </q-page-container>
+      <q-footer>
+        <div class="text-center" >
+          © Desenvolvido por AurumDesk, {{ anoAtual }}.
+        </div>
+      </q-footer>
     </q-layout>
 </template>
 
 <script setup>
 
 import FormLoginRegister from 'src/components/FormLoginRegister.vue';
+var anoAtual = new Date().getFullYear();
 
 </script>
