@@ -74,7 +74,7 @@
 
       <div class="text-center">
         <q-btn label="Cancelar" @click="onCancel" color="secondary" flat class="q-ml-sm" to="/" />
-        <q-btn label="Salvar" @click="onSave" color="secondary" to="/encomendas" />
+        <q-btn label="Salvar" @click="onSave" color="secondary" />
       </div>
     </q-form>
   </div>
@@ -122,11 +122,11 @@ async function onSave() {
       icon: 'cloud_done',
       message: 'Venda Salva',
     })
+    router.push('/encomendas')
     return venda
   } catch (error) {
     console.log(error)
   }
-  router.push('/encomendas')
 }
 
 function onCancel() {
