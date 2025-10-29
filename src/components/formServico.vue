@@ -131,11 +131,11 @@ async function onSave() {
       icon: 'cloud_done',
       message: 'Serviço Salvo',
     })
+    router.push('/servicos')
     return servico
   } catch (error) {
     console.log(error)
   }
-  router.push('/servicos')
 }
 
 function onCancel() {
