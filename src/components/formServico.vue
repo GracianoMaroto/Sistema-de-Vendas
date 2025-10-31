@@ -15,6 +15,7 @@
         type="text"
         v-model="formServicos.CPF"
         label="CPF"
+        mask="###.###.###-##"
         hint="CPF do cliente"
         lazy-rules
         :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
@@ -24,6 +25,7 @@
         type="text"
         v-model="formServicos.telefone"
         label="Telefone"
+        mask="(##) #####-####"
         hint="Telefone do cliente"
         lazy-rules
         :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
@@ -46,6 +48,7 @@
         filled
         v-model="formServicos.dataEntrega"
         label="Data de Entrega"
+        mask="##/##/####"
         lazy-rules
         :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
       />
@@ -53,6 +56,8 @@
         filled
         v-model="formServicos.totalFinal"
         label="Total Final"
+        mask="##.###,##"
+        reverse-fill-mask
         hint="Já com descontos e abatimentos"
         lazy-rules
         :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
@@ -125,6 +130,7 @@ async function onSave() {
       formServicos.value.statusServico,
     )
     console.log('Serviço Salvo')
+
     $q.notify({
       color: 'green-4',
       textColor: 'white',

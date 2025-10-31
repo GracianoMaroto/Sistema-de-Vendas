@@ -11,7 +11,6 @@ export const useVendasStore = defineStore('vendas', {
       this.error = null
       try {
         const { data } = await api.get('/vendas')
-        console.log(data)
         this.vendas = data
         return this.vendas
       } catch (error) {
@@ -42,9 +41,54 @@ export const useVendasStore = defineStore('vendas', {
           statusPagamento,
           statusVenda,
         })
-        console.log(vendaData)
-        this.vendas = { ...vendaData }
-        return this.vendas
+        this.vendas.push(vendaData)
+        return vendaData
+      } catch (error) {
+        this.error = error
+      }
+    },
+    async editVenda(
+      id,
+      nome,
+      CPF,
+      telefone,
+      descricaoVenda,
+      dataEntrega,
+      totalFinal,
+      formaPagamento,
+      statusPagamento,
+      statusVenda,
+    ) {
+      this.error = null
+      try {
+        const { data: vendaData } = await api.patch(`/vendas/${id}`, {
+          nome,
+          CPF,
+          telefone,
+          descricaoVenda,
+          dataEntrega,
+          totalFinal,
+          formaPagamento,
+          statusPagamento,
+          statusVenda,
+        })
+        const index = this.vendas.findIndex((venda) => venda.id === id)
+
+        if (index !== -1) {
+          this.vendas[index] = vendaData
+        } else {
+          this.vendas.push(vendaData)
+        }
+        return vendaData
+      } catch (error) {
+        this.error = error
+      }
+    },
+    async deletarVenda(id) {
+      this.error = null
+      try {
+        await api.delete(`/vendas/${id}`)
+        this.vendas = this.vendas.filter((venda) => venda.id !== id)
       } catch (error) {
         this.error = error
       }

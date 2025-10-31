@@ -1,9 +1,34 @@
 <template>
   <q-page class="q-pa-md" style="background-color: #fff">
-    <div class="row items-center q-mb-md">
-      <q-icon name="assignment" size="32px" color="secondary" class="q-mr-sm" />
-      <h1 class="text-h5 text-bold" style="color: black">Encomendas Registradas</h1>
+    <div class="row items-center q-mb-md justify-between">
+      <div class="row items-center">
+        <q-icon name="assignment" size="32px" color="secondary" class="q-mr-sm" />
+        <h1 class="text-h5 text-bold" style="color: black">Encomendas Registradas</h1>
+      </div>
+
+      <!-- Total de vendas -->
+      <div class="row items-center bg-grey-2 q-pa-sm q-mt-xs rounded shadow-1">
+        <span class="text-h6 text-bold text-secondary">R$ </span>
+        <span class="text-h6 text-bold q-ml-sm" style="color: black">
+          {{ totalVendas.toFixed(2) }}
+        </span>
+      </div>
     </div>
+
+    <q-input
+      v-model="search"
+      class="q-mb-lg"
+      filled
+      type="search"
+      label="Buscar venda"
+      hint="Digite o nome do cliente"
+    >
+      <template v-slot:append>
+        <q-icon name="search" />
+      </template>
+    </q-input>
+
+    <DialogEditVenda v-model="dialogEditVenda" :venda="vendaSelecionada" @salvar="salvarEdicao" />
 
     <div v-if="vendasStore.vendas.length === 0" class="text-center q-mt-xl" style="color: black">
       Nenhuma venda registrada.
@@ -11,7 +36,7 @@
 
     <div v-else class="q-gutter-md">
       <q-card
-        v-for="venda in vendasStore.vendas"
+        v-for="venda in vendasFiltradas"
         :key="venda.id"
         flat
         bordered
@@ -36,7 +61,7 @@
           </div>
 
           <div class="row q-gutter-sm">
-            <q-btn flat dense color="secondary" icon="edit" @click="editarVenda(venda)" />
+            <q-btn flat dense color="secondary" icon="edit" @click="abrirEdicao(venda)" />
             <q-btn flat dense color="negative" icon="delete" @click="deletarVenda(venda.id)" />
           </div>
         </q-card-section>
@@ -88,10 +113,71 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useVendasStore } from 'src/store/vendas'
+import { useQuasar } from 'quasar'
+import DialogEditVenda from 'src/components/dialogs/DialogEditVenda.vue'
 
+const $q = useQuasar()
 const vendasStore = useVendasStore()
+
+const search = ref('')
+const dialogEditVenda = ref(false)
+const vendaSelecionada = ref(null)
+
+const vendasFiltradas = computed(() => {
+  const termo = search.value.toLowerCase()
+  return vendasStore.vendas.filter((s) => s.nome.toLowerCase().includes(termo))
+})
+
+const totalVendas = computed(() => {
+  if (!Array.isArray(vendasStore.vendas)) return 0
+  return vendasStore.vendas.reduce((acc, venda) => {
+    const valor =
+      parseFloat(venda.totalFinal.replace('R$ ', '').replace(/\./g, '').replace(',', '.')) || 0
+    return acc + valor
+  }, 0)
+})
+
+function abrirEdicao(venda) {
+  vendaSelecionada.value = { ...venda }
+  dialogEditVenda.value = true
+}
+
+async function salvarEdicao(vendaAtualizada) {
+  await vendasStore.editVenda(
+    vendaAtualizada.id,
+    vendaAtualizada.nome,
+    vendaAtualizada.CPF,
+    vendaAtualizada.telefone,
+    vendaAtualizada.descricaoVenda,
+    vendaAtualizada.dataEntrega,
+    vendaAtualizada.totalFinal,
+    vendaAtualizada.formaPagamento,
+    vendaAtualizada.statusPagamento,
+    vendaAtualizada.statusVenda,
+  )
+}
+
+async function deletarVenda(id) {
+  try {
+    await vendasStore.deletarVenda(id)
+    $q.notify({
+      color: 'negative',
+      textColor: 'white',
+      icon: 'delete',
+      message: 'Venda deletada com sucesso',
+    })
+  } catch (error) {
+    console.log(error)
+    $q.notify({
+      color: 'negative',
+      textColor: 'white',
+      icon: 'error',
+      message: 'Erro ao deletar a venda',
+    })
+  }
+}
 
 onMounted(async () => {
   await vendasStore.getVendas()

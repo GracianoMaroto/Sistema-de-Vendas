@@ -58,9 +58,13 @@ const { login } = useAuthStore()
 async function realizarLogin() {
   try {
     const token = await login(loginForm.value.email, loginForm.value.password)
-    console.log(token, 'login')
     if (token) {
+      localStorage.setItem('token', token)
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      localStorage.setItem('nomeUsuario', payload.name)
+
       router.push('/')
+
       Notify.create({
         message: 'Login realizado com sucesso',
         color: 'green',

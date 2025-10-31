@@ -12,18 +12,20 @@
 
       <q-input
         filled
-        type="number"
+        type="text"
         v-model="formVendas.CPF"
         label="CPF"
+        mask="###.###.###-##"
         hint="CPF do cliente"
         lazy-rules
         :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
       />
       <q-input
         filled
-        type="number"
+        type="text"
         v-model="formVendas.telefone"
         label="Telefone"
+        mask="(##) #####-####"
         hint="Telefone do cliente"
         lazy-rules
         :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
@@ -39,6 +41,7 @@
         filled
         v-model="formVendas.dataEntrega"
         label="Data de Entrega"
+        mask="##/##/####"
         lazy-rules
         :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
       />
@@ -46,6 +49,8 @@
         filled
         v-model="formVendas.totalFinal"
         label="Total Final"
+        mask="##.###,##"
+        reverse-fill-mask
         hint="Já com descontos e abatimentos"
         lazy-rules
         :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
@@ -83,8 +88,8 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useVendasStore } from 'src/store/vendas'
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
 const $q = useQuasar()
 const router = useRouter()

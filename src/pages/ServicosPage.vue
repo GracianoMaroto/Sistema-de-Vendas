@@ -1,21 +1,48 @@
 <template>
   <q-page class="q-pa-md" style="background-color: #fff">
-    <div class="row items-center q-mb-md">
-      <q-icon name="assignment" size="32px" color="secondary" class="q-mr-sm" />
-      <h1 class="text-h5 text-bold" style="color: black">Serviços Registrados</h1>
+    <div class="row items-center q-mb-md justify-between">
+      <div class="row items-center">
+        <q-icon name="assignment" size="32px" color="secondary" class="q-mr-sm" />
+        <h1 class="text-h5 text-bold" style="color: black">Serviços Registrados</h1>
+      </div>
+
+      <div class="row items-center bg-grey-2 q-pa-sm q-mt-sm rounded shadow-1">
+        <span class="text-h6 text-bold text-secondary">R$ </span>
+        <span class="text-h6 text-bold q-ml-sm" style="color: black">
+          {{ totalServicos.toFixed(2) }}
+        </span>
+      </div>
     </div>
 
-    <div
-      v-if="servicosStore.servicos.length === 0"
-      class="text-center q-mt-xl"
-      style="color: black"
+    <!-- Campo de busca -->
+    <q-input
+      v-model="search"
+      class="q-mb-lg"
+      filled
+      type="search"
+      label="Buscar serviço"
+      hint="Digite o nome do cliente"
     >
-      Nenhum serviço registrado.
+      <template v-slot:append>
+        <q-icon name="search" />
+      </template>
+    </q-input>
+
+    <!-- Diálogo de edição -->
+    <DialogEditServico
+      v-model="dialogEditServico"
+      :servico="servicoSelecionado"
+      @salvar="salvarEdicao"
+    />
+
+    <div v-if="servicosFiltrados.length === 0" class="text-center q-mt-xl" style="color: black">
+      Nenhum serviço encontrado.
     </div>
 
+    <!-- Lista de serviços -->
     <div v-else class="q-gutter-md">
       <q-card
-        v-for="servico in servicosStore.servicos"
+        v-for="servico in servicosFiltrados"
         :key="servico.id"
         flat
         bordered
@@ -40,7 +67,7 @@
           </div>
 
           <div class="row q-gutter-sm">
-            <q-btn flat dense color="secondary" icon="edit" @click="editarServico(servico)" />
+            <q-btn flat dense color="secondary" icon="edit" @click="abrirEdicao(servico)" />
             <q-btn flat dense color="negative" icon="delete" @click="deletarServico(servico.id)" />
           </div>
         </q-card-section>
@@ -96,10 +123,71 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 import { useServicosStore } from 'src/store/servicos'
+import DialogEditServico from 'src/components/dialogs/DialogEditServico.vue'
 
+const $q = useQuasar()
 const servicosStore = useServicosStore()
+
+const search = ref('')
+const dialogEditServico = ref(false)
+const servicoSelecionado = ref(null)
+
+const servicosFiltrados = computed(() => {
+  const termo = search.value.toLowerCase()
+  return servicosStore.servicos.filter((s) => s.nome.toLowerCase().includes(termo))
+})
+
+const totalServicos = computed(() => {
+  if (!Array.isArray(servicosStore.servicos)) return 0
+  return servicosStore.servicos.reduce((acc, servico) => {
+    const valor = parseFloat(servico.totalFinal) || 0
+    return acc + valor
+  }, 0)
+})
+
+function abrirEdicao(servico) {
+  servicoSelecionado.value = { ...servico }
+  dialogEditServico.value = true
+}
+
+async function salvarEdicao(servicoAtualizado) {
+  await servicosStore.editServico(
+    servicoAtualizado.id,
+    servicoAtualizado.nome,
+    servicoAtualizado.CPF,
+    servicoAtualizado.telefone,
+    servicoAtualizado.descricaoServico,
+    servicoAtualizado.itensRecebidos,
+    servicoAtualizado.dataEntrega,
+    servicoAtualizado.totalFinal,
+    servicoAtualizado.formaPagamento,
+    servicoAtualizado.statusPagamento,
+    servicoAtualizado.statusServico,
+  )
+}
+
+async function deletarServico(id) {
+  try {
+    await servicosStore.deletarServico(id)
+    $q.notify({
+      color: 'negative',
+      textColor: 'white',
+      icon: 'delete',
+      message: 'Serviço deletado com sucesso',
+    })
+  } catch (error) {
+    console.error(error)
+    $q.notify({
+      color: 'negative',
+      textColor: 'white',
+      icon: 'error',
+      message: 'Erro ao deletar o serviço',
+    })
+  }
+}
 
 onMounted(async () => {
   await servicosStore.getServicos()

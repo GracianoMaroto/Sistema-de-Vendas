@@ -3,6 +3,7 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    meta: { requiresAuth: true }, // protege tudo dentro do layout
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'registrarvendas', component: () => import('pages/RegistrarVendasPage.vue') },
@@ -11,9 +12,6 @@ const routes = [
       { path: 'servicos', component: () => import('pages/ServicosPage.vue') },
     ],
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
