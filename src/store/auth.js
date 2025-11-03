@@ -17,8 +17,8 @@ export const useAuthStore = defineStore('auth', {
         this.token = dataLogin.access_token
         localStorage.setItem('token', dataLogin.access_token)
         return dataLogin.access_token
-      } catch (error) {
-        this.error = error
+      } catch (err) {
+        this.error = err.response?.data?.message || err.message || 'Erro desconhecido'
       }
     },
   },
