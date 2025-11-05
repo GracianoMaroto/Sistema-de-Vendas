@@ -62,6 +62,7 @@ async function realizarLogin() {
       localStorage.setItem('token', token)
       const payload = JSON.parse(atob(token.split('.')[1]))
       localStorage.setItem('nomeUsuario', payload.name)
+      localStorage.setItem('roleUsuario', payload.role)
 
       router.push('/')
 

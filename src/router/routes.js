@@ -10,6 +10,7 @@ const routes = [
       { path: 'registrarservicos', component: () => import('pages/RegistrarServicosPage.vue') },
       { path: 'encomendas', component: () => import('pages/EncomendasPage.vue') },
       { path: 'servicos', component: () => import('pages/ServicosPage.vue') },
+      { path: 'settings', component: () => import('pages/SettingsPage.vue') },
     ],
   },
   {

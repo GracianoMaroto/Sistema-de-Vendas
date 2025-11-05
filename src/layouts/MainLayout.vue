@@ -3,15 +3,22 @@
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title> Álvaro Alianças </q-toolbar-title>
-        <div class="text-black">
-          <q-btn-dropdown split size="12px" color="secondary" :label="primeiroNome">
-            <q-btn
-              icon="logout"
-              class="text-center full-width text-red-6"
-              @click="logout"
-              flat
-              label="Sair"
-            />
+        <div>
+          <q-btn-dropdown split color="secondary" size="13px" :label="primeiroNome">
+            <q-list>
+              <q-item class="text-red-6" clickable v-close-popup @click="logout">
+                <q-avatar icon="logout" size="30px" />
+                <q-item-section class="text-black-6" flat>
+                  <q-item-label>Sair</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-if="authorizedUser" clickable v-close-popup @click="settings">
+                <q-avatar icon="settings" size="30px" />
+                <q-item-section class="text-black-6" flat>
+                  <q-item-label>Config</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
           </q-btn-dropdown>
         </div>
       </q-toolbar>
@@ -46,6 +53,12 @@ const router = useRouter()
 
 const nomeUsuario = localStorage.getItem('nomeUsuario')
 const primeiroNome = (nomeUsuario || '').split(' ')[0] || 'Usuário'
+const roleUsuario = localStorage.getItem('roleUsuario')
+const authorizedUser = roleUsuario === 'ADMIN'
+
+function settings() {
+  router.push('/settings')
+}
 
 function logout() {
   localStorage.removeItem('token')

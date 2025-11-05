@@ -1,18 +1,18 @@
 <template>
   <q-page class="q-pa-md" style="background-color: #fff">
-    <div class="row items-center q-mb-md justify-between">
-      <div class="row items-center">
-        <q-icon name="assignment" size="32px" color="secondary" class="q-mr-sm" />
-        <h1 class="text-h5 text-bold" style="color: black">Encomendas Registradas</h1>
-      </div>
+    <div class="row items-center">
+      <q-icon name="assignment" size="32px" color="secondary" class="q-mr-sm" />
+      <h1 class="text-h5 text-bold" style="color: black">Encomendas Registradas</h1>
+    </div>
 
-      <!-- Total de vendas -->
-      <div class="row items-center bg-grey-2 q-pa-sm q-mt-xs rounded shadow-1">
-        <span class="text-h6 text-bold text-secondary">R$ </span>
-        <span class="text-h6 text-bold q-ml-sm" style="color: black">
-          {{ totalVendas.toFixed(2) }}
-        </span>
-      </div>
+    <div
+      class="row items-center bg-grey-2 q-pa-sm q-mb-md rounded shadow-1"
+      style="max-width: fit-content"
+    >
+      <span class="text-h6 text-bold text-secondary">R$ </span>
+      <span class="text-h6 text-bold q-ml-sm" style="color: black">
+        {{ totalVendas.toFixed(2) }}
+      </span>
     </div>
 
     <q-input

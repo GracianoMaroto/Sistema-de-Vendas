@@ -7,7 +7,7 @@
         label="Nome Completo"
         hint="Nome do cliente"
         lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+        :rules="[(val) => (val && val.length > 0) || 'Por favor digite o nome do cliente']"
       />
 
       <q-input
@@ -18,7 +18,7 @@
         mask="###.###.###-##"
         hint="CPF do cliente"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[(val) => (val !== null && val !== '') || 'Por favor digite o CPF do cliente']"
       />
       <q-input
         filled
@@ -28,21 +28,23 @@
         mask="(##) #####-####"
         hint="Telefone do cliente"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[(val) => (val !== null && val !== '') || 'Por favor digite o telefone do cliente']"
       />
       <q-input
         filled
         v-model="formServicos.itensRecebidos"
         label="Itens Recebidos"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[(val) => (val !== null && val !== '') || 'Por favor insira os itens recebidos']"
       />
       <q-input
         filled
         v-model="formServicos.descricaoServico"
         label="Descrição do Serviço"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[
+          (val) => (val !== null && val !== '') || 'Por favor insira a descrição do Serviço',
+        ]"
       />
       <q-input
         filled
@@ -50,7 +52,7 @@
         label="Data de Entrega"
         mask="##/##/####"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[(val) => (val !== null && val !== '') || 'Por favor selecione a data de entrega']"
       />
       <q-input
         filled
@@ -60,28 +62,34 @@
         reverse-fill-mask
         hint="Já com descontos e abatimentos"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[(val) => (val !== null && val !== '') || 'Por favor digite o total final']"
       />
       <q-input
         filled
         v-model="formServicos.formaPagamento"
         label="Forma de Pagamento"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[(val) => (val !== null && val !== '') || 'Por favor digite a forma de Pagamento']"
       />
-      <q-input
+      <q-select
+        :options="pagamentoOptions"
         filled
         v-model="formServicos.statusPagamento"
         label="Status de Pagamento"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[
+          (val) => (val !== null && val !== '') || 'Por favor selecione o status do Pagamento',
+        ]"
       />
-      <q-input
+      <q-select
+        :options="statusOptions"
         filled
         v-model="formServicos.statusServico"
         label="Status do Serviço"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Please type something']"
+        :rules="[
+          (val) => (val !== null && val !== '') || 'Por favor selecione o status do Serviço',
+        ]"
       />
 
       <div class="text-center">
@@ -100,6 +108,8 @@ import { useRouter } from 'vue-router'
 
 const $q = useQuasar()
 const router = useRouter()
+const pagamentoOptions = ['Pago', 'Parcialmente Pago', 'A pagar']
+const statusOptions = ['Finalizado', 'Em andamento', 'Pendente']
 
 const formServicos = ref({
   nome: '',
