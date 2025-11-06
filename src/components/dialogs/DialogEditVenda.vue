@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="isOpen" persistent>
-    <q-card style="min-width: 400px; border-radius: 12px">
+    <q-card style="min-width: 330px; border-radius: 12px">
       <q-card-section>
         <div class="text-h6 text-center text-secondary">Editar Venda</div>
       </q-card-section>
@@ -20,8 +20,26 @@
           dense
         />
         <q-input v-model="form.totalFinal" label="Total Final (R$)" outlined dense />
-        <q-input v-model="form.statusPagamento" label="Status Pagamento" outlined dense />
-        <q-input v-model="form.statusVenda" label="Status da Venda" outlined dense />
+        <q-select
+          :options="pagamentoOptions"
+          filled
+          v-model="form.statusPagamento"
+          label="Status de Pagamento"
+          lazy-rules
+          :rules="[
+            (val) => (val !== null && val !== '') || 'Por favor selecione o status do Pagamento',
+          ]"
+        />
+        <q-select
+          :options="statusOptions"
+          filled
+          v-model="form.statusVenda"
+          label="Status da Venda"
+          lazy-rules
+          :rules="[
+            (val) => (val !== null && val !== '') || 'Por favor selecione o status da Venda',
+          ]"
+        />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -45,6 +63,8 @@ const emit = defineEmits(['update:modelValue'])
 
 const $q = useQuasar()
 const vendasStore = useVendasStore()
+const pagamentoOptions = ['Pago', 'Parcialmente Pago', 'A pagar']
+const statusOptions = ['Finalizado', 'Em andamento', 'Pendente']
 
 const isOpen = ref(false)
 const form = ref({

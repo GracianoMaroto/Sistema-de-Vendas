@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="loading" persistent>
-    <q-card>
+    <q-card style="min-width: 330px; border-radius: 12px">
       <q-tabs dense class="text-black" active-color="black" indicator-color="secondary">
         <q-tab name="login" label="Cadastrar Usuário" />
       </q-tabs>
@@ -42,25 +42,26 @@
             :rules="[(val) => !!val || 'Cargo é obrigatório']"
             required
           />
-          <q-btn
-            label="Cancelar"
-            style="background-color: black; color: goldenrod"
-            class="q-mt-md q-mr-md"
-            :loading="loading"
-            :disable="loading"
-            v-close-popup
-          />
-          <q-btn
-            label="Salvar"
-            @click="realizarCadastro"
-            style="background-color: black; color: goldenrod"
-            class="q-mt-md"
-            :loading="loading"
-            :disable="loading"
-            v-close-popup
-          />
         </q-form>
       </q-card-section>
+      <q-card-actions align="right">
+        <q-btn
+          flat
+          label="Cancelar"
+          color="grey"
+          :loading="loading"
+          :disable="loading"
+          v-close-popup
+        />
+        <q-btn
+          color="secondary"
+          label="Salvar"
+          :loading="loading"
+          :disable="loading"
+          @click="realizarCadastro"
+          v-close-popup
+        />
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>

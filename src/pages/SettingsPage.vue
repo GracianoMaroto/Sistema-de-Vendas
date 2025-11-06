@@ -13,18 +13,28 @@
       />
     </div>
 
-    <q-input
-      v-model="search"
-      class="q-mb-lg"
-      filled
-      type="search"
-      label="Buscar usuário(a)"
-      hint="Digite o nome do usuário(a)"
-    >
-      <template v-slot:append>
-        <q-icon name="search" />
-      </template>
-    </q-input>
+    <div class="row q-gutter-sm">
+      <q-input
+        v-model="search"
+        class="q-mb-lg"
+        filled
+        type="search"
+        label="Buscar venda"
+        hint="Digite o nome do cliente"
+        style="width: 300px"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <q-btn
+        style="height: 55px; width: 50px"
+        icon="filter_alt"
+        color="grey-3"
+        text-color="grey-7"
+        unelevated
+      />
+    </div>
 
     <DialogEditUser v-model="dialogEditUser" :user="userSelecionado" @salvar="salvarEdicao" />
     <DialogAddUser v-model="dialogAddUser" />
@@ -63,6 +73,29 @@
             <q-btn flat dense color="secondary" icon="edit" @click="abrirEdicao(user)" />
             <q-btn flat dense color="negative" icon="delete" @click="deletarUsuario(user.id)" />
           </div>
+          <!-- <q-dialog v-model="dialogDeleteUser" persistent>
+            <q-card
+              style="
+                border-top: 6px solid goldenrod;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+              "
+            >
+              <q-card-section class="row items-center">
+                <span class="q-ml-sm">Você confirma a exclusão do usuário(a) {{ user.name }}?</span>
+              </q-card-section>
+              <q-card-actions align="right">
+                <q-btn flat label="Cancel" color="grey" v-close-popup />
+                <q-btn
+                  flat
+                  label="Confirm"
+                  color="secondary"
+                  @click="confirmar"
+                  v-close-popup
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog> -->
         </q-card-section>
       </q-card>
     </div>
@@ -70,11 +103,11 @@
 </template>
 
 <script setup>
+import { useQuasar } from 'quasar'
 import { useUsersStore } from 'src/store/usuarios'
 import { computed, onMounted, ref } from 'vue'
 import DialogEditUser from 'src/components/dialogs/DialogEditUser.vue'
 import DialogAddUser from 'src/components/dialogs/DialogAddUser.vue'
-import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
 const search = ref('')
@@ -82,6 +115,7 @@ const usersStore = useUsersStore()
 const dialogEditUser = ref(false)
 const dialogAddUser = ref(false)
 const userSelecionado = ref(null)
+// const dialogDeleteUser = ref(false)
 
 const showUsers = computed(() => {
   const termo = search.value.toLowerCase()
@@ -91,6 +125,10 @@ const showUsers = computed(() => {
 function criarUsuario() {
   dialogAddUser.value = true
 }
+
+// function abrirDelecao() {
+//   dialogEditUser.value = true
+// }
 
 function abrirEdicao(user) {
   userSelecionado.value = { ...user }

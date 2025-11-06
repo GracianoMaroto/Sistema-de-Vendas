@@ -15,21 +15,29 @@
       </span>
     </div>
 
-    <!-- Campo de busca -->
-    <q-input
-      v-model="search"
-      class="q-mb-lg"
-      filled
-      type="search"
-      label="Buscar serviço"
-      hint="Digite o nome do cliente"
-    >
-      <template v-slot:append>
-        <q-icon name="search" />
-      </template>
-    </q-input>
+    <div class="row q-gutter-sm">
+      <q-input
+        v-model="search"
+        class="q-mb-lg"
+        filled
+        type="search"
+        label="Buscar venda"
+        hint="Digite o nome do cliente"
+        style="width: 300px"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <q-btn
+        style="height: 55px; width: 50px"
+        icon="filter_alt"
+        color="grey-3"
+        text-color="grey-7"
+        unelevated
+      />
+    </div>
 
-    <!-- Diálogo de edição -->
     <DialogEditServico
       v-model="dialogEditServico"
       :servico="servicoSelecionado"
@@ -68,9 +76,48 @@
           </div>
 
           <div class="row q-gutter-sm">
-            <q-btn flat dense color="secondary" icon="edit" @click="abrirEdicao(servico)" />
-            <q-btn flat dense color="negative" icon="delete" @click="deletarServico(servico.id)" />
+            <q-btn
+              flat
+              dense
+              color="secondary"
+              icon="edit"
+              @click="abrirEdicao(servico)"
+              :disable="!authorizedUser"
+            />
+            <q-btn
+              flat
+              dense
+              color="negative"
+              icon="delete"
+              @click="deletarServico(servico.id)"
+              :disable="!authorizedUser"
+            />
           </div>
+          <!-- <q-dialog v-model="confirm" persistent>
+            <q-card
+              style="
+                border-top: 6px solid goldenrod;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+              "
+            >
+              <q-card-section class="row items-center">
+                <span class="q-ml-sm"
+                  >Você confirma a exclusão do servico de {{ servico.nome }}?</span
+                >
+              </q-card-section>
+              <q-card-actions align="right">
+                <q-btn flat label="Cancel" color="grey" v-close-popup />
+                <q-btn
+                  flat
+                  label="Confirm"
+                  color="secondary"
+                  @click="deletarServico(servico.id)"
+                  v-close-popup
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog> -->
         </q-card-section>
 
         <q-separator color="accent" />
@@ -124,17 +171,20 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
+import { computed, ref, onMounted } from 'vue'
 import { useServicosStore } from 'src/store/servicos'
 import DialogEditServico from 'src/components/dialogs/DialogEditServico.vue'
 
 const $q = useQuasar()
 const servicosStore = useServicosStore()
 
+// const confirm = ref(false)
 const search = ref('')
 const dialogEditServico = ref(false)
 const servicoSelecionado = ref(null)
+const roleUsuario = localStorage.getItem('roleUsuario')
+const authorizedUser = roleUsuario === 'ADMIN' || roleUsuario === 'GERENTE'
 
 const servicosFiltrados = computed(() => {
   const termo = search.value.toLowerCase()

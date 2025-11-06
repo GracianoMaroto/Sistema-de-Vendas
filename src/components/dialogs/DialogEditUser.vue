@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="isOpen" persistent>
-    <q-card style="min-width: 400px; border-radius: 12px">
+    <q-card style="min-width: 330px; border-radius: 12px">
       <q-card-section>
         <div class="text-h6 text-center text-secondary">Editar Usuário</div>
       </q-card-section>
@@ -10,7 +10,7 @@
       <q-card-section class="q-gutter-md">
         <q-input v-model="form.name" label="Nome do Usuário" outlined dense />
         <q-input v-model="form.email" label="E-mail" outlined dense />
-        <q-input v-model="form.role" label="Cargo" outlined dense />
+        <q-select :options="roleOptions" v-model="form.role" label="Cargo" outlined dense />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -35,6 +35,7 @@ const emit = defineEmits(['update:modelValue'])
 const $q = useQuasar()
 const usersStore = useUsersStore()
 
+const roleOptions = ['ADMIN', 'GERENTE', 'VENDEDOR']
 const isOpen = ref(false)
 const form = ref({
   id: null,

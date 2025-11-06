@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="isOpen" persistent>
-    <q-card style="min-width: 400px; border-radius: 12px">
+    <q-card style="min-width: 330px; border-radius: 12px">
       <q-card-section>
         <div class="text-h6 text-center text-secondary">Editar Serviço</div>
       </q-card-section>

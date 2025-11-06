@@ -15,18 +15,28 @@
       </span>
     </div>
 
-    <q-input
-      v-model="search"
-      class="q-mb-lg"
-      filled
-      type="search"
-      label="Buscar venda"
-      hint="Digite o nome do cliente"
-    >
-      <template v-slot:append>
-        <q-icon name="search" />
-      </template>
-    </q-input>
+    <div class="row q-gutter-sm">
+      <q-input
+        v-model="search"
+        class="q-mb-lg"
+        filled
+        type="search"
+        label="Buscar venda"
+        hint="Digite o nome do cliente"
+        style="width: 300px"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <q-btn
+        style="height: 55px; width: 50px"
+        icon="filter_alt"
+        color="grey-3"
+        text-color="grey-7"
+        unelevated
+      />
+    </div>
 
     <DialogEditVenda v-model="dialogEditVenda" :venda="vendaSelecionada" @salvar="salvarEdicao" />
 
@@ -61,9 +71,46 @@
           </div>
 
           <div class="row q-gutter-sm">
-            <q-btn flat dense color="secondary" icon="edit" @click="abrirEdicao(venda)" />
-            <q-btn flat dense color="negative" icon="delete" @click="deletarVenda(venda.id)" />
+            <q-btn
+              flat
+              dense
+              color="secondary"
+              icon="edit"
+              @click="abrirEdicao(venda)"
+              :disable="!authorizedUser"
+            />
+            <q-btn
+              flat
+              dense
+              color="negative"
+              icon="delete"
+              @click="deletarVenda(venda.id)"
+              :disable="!authorizedUser"
+            />
           </div>
+          <!-- <q-dialog v-model="confirm" persistent>
+            <q-card
+              style="
+                border-top: 6px solid goldenrod;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+              "
+            >
+              <q-card-section class="row items-center">
+                <span class="q-ml-sm">Você confirma a exclusão da venda de {{ venda.nome }}?</span>
+              </q-card-section>
+              <q-card-actions align="right">
+                <q-btn flat label="Cancel" color="grey" v-close-popup />
+                <q-btn
+                  flat
+                  label="Confirm"
+                  color="secondary"
+                  @click="deletarVenda(venda.id)"
+                  v-close-popup
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog> -->
         </q-card-section>
 
         <q-separator color="accent" />
@@ -115,15 +162,18 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 import { useVendasStore } from 'src/store/vendas'
-import { useQuasar } from 'quasar'
 import DialogEditVenda from 'src/components/dialogs/DialogEditVenda.vue'
+import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
 const vendasStore = useVendasStore()
 
+// const confirm = ref(false)
 const search = ref('')
 const dialogEditVenda = ref(false)
 const vendaSelecionada = ref(null)
+const roleUsuario = localStorage.getItem('roleUsuario')
+const authorizedUser = roleUsuario === 'ADMIN' || roleUsuario === 'GERENTE'
 
 const vendasFiltradas = computed(() => {
   const termo = search.value.toLowerCase()
