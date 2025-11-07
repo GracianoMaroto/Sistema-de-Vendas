@@ -22,18 +22,24 @@ export default defineRouter(function (/* { store, ssrContext } */) {
 
   // Guard global para proteger rotas autenticadas
   Router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('token') // ajuste se usa outro nome
-
-    // verifica se a rota (ou alguma ancestral) exige autenticação
+    const token = localStorage.getItem('token')
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
 
+    // Bloqueio se não estiver logado
     if (requiresAuth && !token) {
-      // usuário não autenticado → redireciona para o login
-      next('/auth')
-    } else {
-      // autenticado (ou rota pública) → segue
-      next()
+      return next('/auth')
     }
+
+    // Se rota exige autorização extra (ADMIN)
+    const getRole = localStorage.getItem('roleUsuario')
+    const userAuthorized = to.matched.some((record) => record.meta.userAuthorized)
+
+    if (userAuthorized && getRole !== 'ADMIN') {
+      return next('/') // ou outra página como "/forbidden"
+    }
+
+    // Se passou nas verificações -> segue
+    next()
   })
 
   return Router

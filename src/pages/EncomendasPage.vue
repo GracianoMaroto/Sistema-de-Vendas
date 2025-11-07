@@ -2,7 +2,7 @@
   <q-page class="q-pa-md" style="background-color: #fff">
     <div class="row items-center">
       <q-icon name="assignment" size="32px" color="secondary" class="q-mr-sm" />
-      <h1 class="text-h5 text-bold" style="color: black">Encomendas Registradas</h1>
+      <h1 class="text-h5 text-bold" style="color: black">Vendas Registradas</h1>
     </div>
 
     <div

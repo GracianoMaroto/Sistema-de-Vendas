@@ -2,20 +2,20 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title> Álvaro Alianças </q-toolbar-title>
+        <q-toolbar-title> {{ nomeEmpresa }}</q-toolbar-title>
         <div>
           <q-btn-dropdown split color="secondary" size="13px" :label="primeiroNome">
             <q-list>
-              <q-item class="text-red-6" clickable v-close-popup @click="logout">
-                <q-avatar icon="logout" size="30px" />
-                <q-item-section class="text-black-6" flat>
-                  <q-item-label>Sair</q-item-label>
-                </q-item-section>
-              </q-item>
               <q-item v-if="authorizedUser" clickable v-close-popup @click="settings">
                 <q-avatar icon="settings" size="30px" />
                 <q-item-section class="text-black-6" flat>
                   <q-item-label>Config</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item class="text-red-6" clickable v-close-popup @click="logout">
+                <q-avatar icon="logout" size="30px" />
+                <q-item-section class="text-black-6" flat>
+                  <q-item-label>Sair</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -55,6 +55,7 @@ const nomeUsuario = localStorage.getItem('nomeUsuario')
 const primeiroNome = (nomeUsuario || '').split(' ')[0] || 'Usuário'
 const roleUsuario = localStorage.getItem('roleUsuario')
 const authorizedUser = roleUsuario === 'ADMIN'
+const nomeEmpresa = 'Álvaro Alianças'
 
 function settings() {
   router.push('/settings')
