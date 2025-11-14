@@ -6,18 +6,24 @@ const routes = [
     meta: { requiresAuth: true }, // protege tudo dentro do layout
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'registrarvendas', component: () => import('pages/RegistrarVendasPage.vue') },
-      { path: 'registrarservicos', component: () => import('pages/RegistrarServicosPage.vue') },
-      { path: 'encomendas', component: () => import('pages/EncomendasPage.vue') },
-      { path: 'servicos', component: () => import('pages/ServicosPage.vue') },
+      {
+        path: 'registrarvendas',
+        component: () => import('src/pages/main/RegistrarVendasPage.vue'),
+      },
+      {
+        path: 'registrarservicos',
+        component: () => import('src/pages/main/RegistrarServicosPage.vue'),
+      },
+      { path: 'encomendas', component: () => import('src/pages/main/EncomendasPage.vue') },
+      { path: 'servicos', component: () => import('src/pages/main/ServicosPage.vue') },
       {
         path: 'settings',
-        component: () => import('pages/SettingsPage.vue'),
+        component: () => import('src/pages/main/SettingsPage.vue'),
         meta: { userAuthorized: true },
       },
       {
         path: 'usuarios',
-        component: () => import('pages/UsuariosPage.vue'),
+        component: () => import('src/pages/main/UsuariosPage.vue'),
         meta: { userAuthorized: true },
       },
     ],

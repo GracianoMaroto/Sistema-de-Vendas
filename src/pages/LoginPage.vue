@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import FormLoginRegister from 'src/components/FormLogin.vue'
+import FormLoginRegister from 'src/components/forms/FormLogin.vue'
 
 var anoAtual = new Date().getFullYear()
 </script>
